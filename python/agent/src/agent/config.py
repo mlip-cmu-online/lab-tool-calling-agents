@@ -6,6 +6,8 @@ You can change the model string to use different providers (OpenAI, Anthropic, G
 via LiteLLM, which provides a unified interface.
 """
 
+import os
+
 from litellm import completion
 from .rate_limiter import RateLimiter
 
@@ -13,14 +15,15 @@ from .rate_limiter import RateLimiter
 # Model Configuration
 #################################
 
-# LiteLLM supports many providers - just change the model string:
+# LiteLLM supports many providers. Set AGENT_MODEL to override the documented default:
 # - OpenAI: "gpt-4o", "gpt-4o-mini", "gpt-3.5-turbo"
 # - Anthropic: "claude-3-5-sonnet-20241022", "claude-3-haiku-20240307"
-# - Google: "gemini/gemini-2.0-flash-exp", "gemini/gemini-1.5-pro"
+# - Google: "gemini/gemini-2.5-flash"
 # See: https://docs.litellm.ai/docs/providers
 
-# Rate limiter: 5 calls per 60 seconds (1 minute)
+# Rate limiter: 15 calls per 60 seconds (1 minute)
 rate_limiter = RateLimiter(max_calls=15, period=60)
+AGENT_MODEL = os.environ.get("AGENT_MODEL", "gemini/gemini-2.5-flash")
 
 
 @rate_limiter
@@ -28,7 +31,7 @@ def agent_llm(messages, tools):
     """
     Get the LLM completion function for the agent model.
 
-    Rate limited to 5 calls per minute to avoid API throttling.
+    Rate limited to 15 calls per minute to avoid API throttling.
     Will automatically wait when limit is reached.
 
     Args:
@@ -40,12 +43,12 @@ def agent_llm(messages, tools):
     """
     has_tools = len(tools) > 0
     return completion(
-                model="gemini/gemini-2.0-flash",
-                messages=messages,
-                tools=tools if has_tools else None,
-                tool_choice="auto" if has_tools else None,
-                temperature=0.0,
-            )
+        model=AGENT_MODEL,
+        messages=messages,
+        tools=tools if has_tools else None,
+        tool_choice="auto" if has_tools else None,
+        temperature=0.0,
+    )
 
 # Benchmark functions - by default uses same model as agent but without tool calling
 def benchmark_user_simulation_llm(messages):

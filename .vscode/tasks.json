@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Lab: start MCP server",
+      "type": "shell",
+      "command": "PORT=3000 HOST=0.0.0.0 .venv/bin/start-airline-server",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "lab",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "MCP Server running",
+          "endsPattern": "Uvicorn running on"
+        }
+      },
+      "presentation": {
+        "group": "lab-services",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Lab: start agent web UI",
+      "type": "shell",
+      "command": ".venv/bin/agent-webui --port 8000 http://localhost:3000/mcp",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "lab",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Server running at",
+          "endsPattern": "Running on"
+        }
+      },
+      "presentation": {
+        "group": "lab-services",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}
