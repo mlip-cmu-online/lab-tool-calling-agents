@@ -4,3 +4,6 @@
 .venv/
 node_modules
 assignment/agent/messages.log
+submission/
+__pycache__/
+*.py[cod]
