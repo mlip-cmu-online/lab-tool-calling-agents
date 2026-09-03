@@ -25,56 +25,6 @@ Any model with modern OpenAI-compatible function calling abilities can be used. 
 4. Start the agent with the CLI or Web UI, passing the address of the MCP server as an argument.
 5. Optionally, run the provided examples and evaluates success from the tau2 benchmark. For this, the user input is simulated with another LLM.
 
-## Generate the submission report
-
-Complete the lab, commit the files that define `current_time` and
-`airport_info`, and save these plain-text evidence files while the agent and
-MCP server are running:
-
-- the `tools/list` output showing both added tools;
-- a before and after transcript for the `current_time` query;
-- a before and after transcript for the `airport_info` query;
-- the exact malicious payload returned by your stub; and
-- the injection-attempt transcript, whether the agent followed or rejected the
-  payload.
-
-Label transcript messages as `User:`, `Assistant:`, and, where applicable,
-`Tool (tool_name):`. JSON transcripts with `role` fields are also accepted. The
-before transcripts need `user` and `assistant` roles. Each after transcript and
-the injection transcript need `user`, `assistant`, and `tool` roles. Include the
-exact saved malicious payload in the injection transcript's tool output.
-
-From the repository root, run the following command. Repeat `--tool-source` if
-your implementation spans several files.
-
-```bash
-python3 scripts/generate-tool-calling-submission.py \
-  --learner "Your name" \
-  --repository-url "https://github.com/your-account/lab-tool-calling-agents" \
-  --tool-source python/mcp_airline/src/mcp_airline/tools.py \
-  --tool-listing evidence/tools-list.txt \
-  --current-time-before evidence/current-time-before.txt \
-  --current-time-after evidence/current-time-after.txt \
-  --airport-info-before evidence/airport-info-before.txt \
-  --airport-info-after evidence/airport-info-after.txt \
-  --malicious-payload evidence/malicious-payload.txt \
-  --injection-transcript evidence/injection-transcript.txt
-```
-
-If you cannot provide repository access, create a patch containing both tool
-definitions (for example,
-`git diff <starter-commit> HEAD > evidence/implementation.patch`) and replace
-`--repository-url` and `--tool-source` with
-`--patch evidence/implementation.patch`.
-
-Open `submission/tool-calling-report.html` and correct every objective item
-marked `missing` before uploading it to Canvas. Keep
-`submission/tool-calling-manifest.json` with the raw evidence. The command only
-reads saved files and local Git metadata. It does not start the server or agent,
-call a model, contact Wikipedia or GitHub, decide whether the attack succeeded,
-or assess the two Canvas explanations. Do not include API keys, tokens, or
-other credentials in evidence files.
-
 ## Recommended Codespace / DevContainer path
 
 Open this repository in GitHub Codespaces, or use **Dev Containers: Reopen in
@@ -138,10 +88,10 @@ python scripts/check_lab_extensions.py \
   --injection-json '{"iata_code":"INJECTION_TEST"}'
 ```
 
-Finally, use the agent CLI or UI for the before/after and injection transcripts;
+Finally, use the agent CLI or UI to try both new tools and the injection stub;
 that step makes real Gemini API calls and therefore requires the Codespaces
-secret. A rejected injection is a valid result—record what the agent actually
-did rather than trying to force a successful attack.
+secret. A rejected injection is a valid result—observe what the agent actually
+does rather than trying to force a successful attack.
 
 ## Development Notes
 
