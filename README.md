@@ -1,5 +1,7 @@
 # Agent with MCP Servers
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mlip-cmu-online/lab-tool-calling-agents?quickstart=1)
+
 This repository contains a very simple tool-calling agent with MCP support (Model Context Protocol)
 to act as a airline customer service agent.
 
