@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
 
 
 @dataclass
@@ -116,7 +116,7 @@ class MCPServerConnection:
     async def _list_tools(self) -> List[MCPTool]:
         """Request list of available tools from the server"""
         if self.transport_type == 'http':
-            async with streamablehttp_client(self.server_url) as (read, write, _):
+            async with streamable_http_client(self.server_url) as (read, write):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     response = await session.list_tools()
@@ -145,7 +145,7 @@ class MCPServerConnection:
     async def _call_tool(self, name: str, args: Dict[str, Any]) -> str:
         """Internal async helper for calling tools"""
         if self.transport_type == 'http':
-            async with streamablehttp_client(self.server_url) as (read, write, _):
+            async with streamable_http_client(self.server_url) as (read, write):
                 async with ClientSession(read, write) as session:
                     await session.initialize()
                     response = await session.call_tool(name, arguments=args)

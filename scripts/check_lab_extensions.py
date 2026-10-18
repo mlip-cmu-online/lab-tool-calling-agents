@@ -10,7 +10,7 @@ import sys
 import urllib.request
 
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
 
 
 def check_wikipedia() -> None:
@@ -40,7 +40,7 @@ async def fetch_tool_results(
 ) -> tuple[set[str], object | None, object | None, object | None]:
     """Fetch results while keeping validation errors outside MCP task groups."""
 
-    async with streamablehttp_client(url) as (read, write, _):
+    async with streamable_http_client(url) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             listed = await session.list_tools()

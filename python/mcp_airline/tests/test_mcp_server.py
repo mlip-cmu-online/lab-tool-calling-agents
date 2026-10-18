@@ -4,7 +4,7 @@ import asyncio
 import pytest
 import pytest_asyncio
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
 
 
 # Default server URL - can be overridden with environment variable
@@ -14,7 +14,7 @@ SERVER_URL = "http://localhost:3000/mcp"
 @pytest_asyncio.fixture(autouse=True)
 async def reset_database():
     """Reset the database before each test."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             # Call reset tool to restore database to initial state
@@ -25,7 +25,7 @@ async def reset_database():
 @pytest.mark.asyncio
 async def test_reset_database():
     """Test that the reset tool properly restores database state."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -58,7 +58,7 @@ async def test_reset_database():
 @pytest.mark.asyncio
 async def test_list_tools():
     """Test that we can connect and list available tools."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             # Initialize the session
             await session.initialize()
@@ -79,7 +79,7 @@ async def test_list_tools():
 @pytest.mark.asyncio
 async def test_list_all_airports():
     """Test calling list_all_airports tool."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -102,7 +102,7 @@ async def test_list_all_airports():
 @pytest.mark.asyncio
 async def test_calculate():
     """Test calling calculate tool."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -118,7 +118,7 @@ async def test_calculate():
 @pytest.mark.asyncio
 async def test_get_user_details():
     """Test calling get_user_details tool with valid user."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -142,7 +142,7 @@ async def test_get_user_details():
 @pytest.mark.asyncio
 async def test_get_user_details_invalid():
     """Test calling get_user_details tool with invalid user returns error."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -158,7 +158,7 @@ async def test_get_user_details_invalid():
 @pytest.mark.asyncio
 async def test_get_reservation_details():
     """Test getting reservation details."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -179,7 +179,7 @@ async def test_get_reservation_details():
 @pytest.mark.asyncio
 async def test_search_direct_flight():
     """Test searching for direct flights."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -208,7 +208,7 @@ async def test_search_direct_flight():
 @pytest.mark.asyncio
 async def test_search_onestop_flight():
     """Test searching for one-stop flights."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -234,7 +234,7 @@ async def test_search_onestop_flight():
 @pytest.mark.asyncio
 async def test_get_flight_status():
     """Test getting flight status."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -262,7 +262,7 @@ async def test_get_flight_status():
 @pytest.mark.asyncio
 async def test_send_certificate():
     """Test sending a certificate to a user."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -295,7 +295,7 @@ async def test_send_certificate():
 @pytest.mark.asyncio
 async def test_transfer_to_human_agents():
     """Test transfer to human agents."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
@@ -312,7 +312,7 @@ async def test_transfer_to_human_agents():
 @pytest.mark.asyncio
 async def test_cancel_reservation():
     """Test canceling a reservation."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json
@@ -337,7 +337,7 @@ async def test_cancel_reservation():
 @pytest.mark.asyncio
 async def test_update_reservation_passengers():
     """Test updating reservation passengers."""
-    async with streamablehttp_client(SERVER_URL) as (read, write, _):
+    async with streamable_http_client(SERVER_URL) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             import json

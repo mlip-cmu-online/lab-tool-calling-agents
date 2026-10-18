@@ -12,7 +12,7 @@ import time
 from contextlib import closing
 
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
 
 
 def available_port() -> int:
@@ -26,7 +26,7 @@ def available_port() -> int:
 async def list_tools(url: str) -> list[str]:
     """Return the tool names exposed by an initialized MCP session."""
 
-    async with streamablehttp_client(url) as (read, write, _):
+    async with streamable_http_client(url) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             response = await session.list_tools()
